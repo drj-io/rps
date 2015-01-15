@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta name="description" content="Simplest possible examples of HTML, CSS and JavaScript." />
+<meta name="author" content="//samdutton.com">
+<meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+<meta itemprop="name" content="simpl.info: simplest possible examples of HTML, CSS and JavaScript">
+<meta itemprop="image" content="/icon_192x192.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta id="theme-color" name="theme-color" content="#fff">
+
+<base target="_blank">
+
+<script src="/js/bower_components/tracking.js/build/tracking-min.js"></script>
+
+<title></title>
+
+
+  <style>
+  div.select {
+    margin: 0 0 1em 0;
+  }
+  </style>
+
+</head>
+
+<body>
+
+<div id="container">
+
+  <div class="select hide" style="display: none;">
+    <label for="audioSource">Audio source: </label><select id="audioSource"></select>
+  </div>
+
+  <div class="select">
+    <label for="videoSource">Video source: </label><select id="videoSource"></select>
+  </div>
+<hr/>
+  <video muted autoplay></video>
+<hr/>
+ <img id="image" src="">
+  <canvas id="canvas1" style=""></canvas>
+  <canvas id="canvas2" style=""></canvas>
+
+</div>
+
+
+<script>
+ 'use strict';
+
+
+  var canvas = document.getElementById("canvas1")
+  var ctx = canvas.getContext('2d');
+
+  var canvas2 = document.getElementById("canvas2")
+  var ctx2 = canvas2.getContext('2d');
+
+  var localMediaStream = null;
+
+var videoElement = document.querySelector('video');
+var audioSelect = document.querySelector('select#audioSource');
+var videoSelect = document.querySelector('select#videoSource');
+var image = document.getElementById('image');
+
+navigator.getUserMedia = navigator.getUserMedia ||
+  navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+
+function gotSources(sourceInfos) {
+  for (var i = 0; i !== sourceInfos.length; ++i) {
+    var sourceInfo = sourceInfos[i];
+    var option = document.createElement('option');
+    option.value = sourceInfo.id;
+    if (sourceInfo.kind === 'audio') {
+      option.text = sourceInfo.label || 'microphone ' + (audioSelect.length + 1);
+      audioSelect.appendChild(option);
+    } else if (sourceInfo.kind === 'video') {
+      option.text = sourceInfo.label || 'camera ' + (videoSelect.length + 1);
+      videoSelect.appendChild(option);
+    } else {
+      console.log('Some other kind of source: ', sourceInfo);
+    }
+  }
+}
+
+  function snapshot() {
+    if (localMediaStream) {
+      var sw = videoElement.offsetWidth, // source width
+      sh = videoElement.offsetHeight, // source height
+      dw = canvas.width, // destination width
+      dh = canvas.height; // destination height
+      ctx.drawImage(videoElement, 0, 0, dw, dh);
+      // "image/webp" works in Chrome.
+      // Other browsers will fall back to image/png.
+      document.querySelector('img').src = canvas.toDataURL('image/png');
+      doFindFeatures();
+    }
+  }
+
+
+if (typeof MediaStreamTrack.getSources === 'undefined'){
+  alert('This browser does not support MediaStreamTrack.\n\nTry Chrome Canary.');
+} else {
+  MediaStreamTrack.getSources(gotSources);
+}
+
+
+function successCallback(stream) {
+  window.stream = stream; // make stream available to console
+  videoElement.src = window.URL.createObjectURL(stream);
+  videoElement.play();
+  localMediaStream = stream;
+}
+
+function errorCallback(error){
+  console.log('navigator.getUserMedia error: ', error);
+}
+
+function start(){
+  if (!!window.stream) {
+    videoElement.src = null;
+    window.stream.stop();
+  }
+  var audioSource = audioSelect.value;
+  var videoSource = videoSelect.value;
+  var constraints = {
+    audio: {
+      optional: [{sourceId: audioSource}]
+    },
+    video: {
+      optional: [{
+       sourceId: videoSource,
+    }], 
+
+    
+    }
+  };
+  navigator.getUserMedia(constraints, successCallback, errorCallback);
+
+}
+
+audioSelect.onchange = start;
+videoSelect.onchange = start;
+
+start();
+
+
+
+
+
+/*spacebar*/
+
+
+document.onkeydown = checkKey;
+document.onkeyup = releaseKey;
+var activeKey = false;
+function releaseKey(e){
+  activeKey = false;
+}
+function checkKey(e) {
+
+    e = e || window.event;
+    
+    if (e.keyCode == '38') {
+        // up arrow
+
+
+    }
+    if (!activeKey){
+      setTimeout(snapshot, 200);
+      activeKey=true
+    }
+
+}
+
+
+
+
+/* tracking find featers*/
+
+      var doFindFeatures = function() {
+        var width = 300;
+        var height = 150;
+        tracking.Fast.THRESHOLD = 6;
+        ctx.drawImage(image, 0, 0, width, height);
+        var imageData = ctx.getImageData(0, 0, width, height);
+        
+
+        var gray = tracking.Image.grayscale(imageData.data, width, height);
+        var conv = tracking.Image.sobel(gray, width, height, []);
+        
+        
+        var corners = tracking.Fast.findCorners(gray, width, height);
+        
+
+        var rowLastCorners = []
+        for (var i = 0; i < corners.length; i += 2) {
+          ctx.fillStyle = '#0f0';
+          ctx.fillRect(corners[i], corners[i + 1], 2, 2);
+
+          if (!rowLastCorners[corners[i+1]]) {
+            rowLastCorners[corners[i+1]] = 999;
+          }
+          if(corners[i] < rowLastCorners[corners[i+1]]){
+            rowLastCorners[corners[i+1]] = corners[i];
+          }
+        }
+        //console.log(rowLastCorners);
+
+        for (var i =0; i<rowLastCorners.length; i++){
+          ctx.fillStyle = '#f00';
+          ctx.fillRect(rowLastCorners[i], i, width-rowLastCorners[i], 1);
+        }
+        // Pixelate
+
+
+        imageData = ctx.getImageData(0,0, width, height);
+
+        var size = 0.10;
+
+        ctx2.mozImageSmoothingEnabled = false;
+        ctx2.webkitImageSmoothingEnabled = false;
+        ctx2.imageSmoothingEnabled = false;
+
+        /// cache scaled width and height
+        var w = canvas2.width * size
+        var h = canvas2.height * size;
+
+        ctx2.drawImage(canvas, 0, 0, w, h);
+
+        ctx2.drawImage(canvas2, 0, 0, w, h, 0, 0, canvas.width, canvas.height);
+        
+
+
+        // second image:
+
+    
+
+      };
+
+
+</script>
+
+
+</body>
+</html>
