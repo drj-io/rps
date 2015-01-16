@@ -175,7 +175,7 @@ function checkKey(e) {
     if (e.keyCode == '38') {
         // up arrow
         if (!activeKey){
-          //setTimeout(snapshot, 200);
+          setTimeout(snapshot, 200);
           activeKey=true;
 
           currentPlay ++;
