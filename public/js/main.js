@@ -4,7 +4,7 @@
   snd.play();
 
   var words = ['Rock','Paper','Scissors']
-  var rps = ['/img/rock.png','/img/paper.jpg','/img/scissors.jpg'];
+  var rps = ['/img/rock.jpg','/img/paper.jpg','/img/scissors.jpg'];
 
   var currentPlay = 0;
 
@@ -96,9 +96,9 @@
 //     video: {
 //       optional: [{
 //        sourceId: videoSource,
-//     }], 
+//     }],
 
-    
+
 //     }
 //   };
 //   navigator.getUserMedia(constraints, successCallback, errorCallback);
@@ -143,7 +143,7 @@ function calculateWinLose(){
   $("#theirHistory span").removeClass('win')
   $("#myHistory span").removeClass('win')
   $("#theirHistory span").each(function(index){
-    
+
 
 
 
@@ -172,12 +172,12 @@ function calculateWinLose(){
 }
 
 function checkKey(e) {
-    
+
     e = e || window.event;
 
     var myPlayCount = 0;
 
-    
+
     if (e.keyCode == '38') {
         // up arrow
         if (!activeKey){
@@ -196,10 +196,10 @@ function checkKey(e) {
             var snd = new Audio("/mp3/"+currentPlay+".mp3"); // buffers automatically when created
             snd.play();
             console.log(thisPlay);
-            
+
             $('#tupac').attr('src',rps[thisPlay]);
-            
-            
+
+
             $("#play").html(words[thisPlay])
 
             currentPlay = 0;
@@ -225,7 +225,7 @@ function checkKey(e) {
       pacBrain.theirMove(2);
       $("#theirHistory").append("<span>"+words[2] + "</span>")
     }
-    
+
     if(e.keyCode == 27){
       currentPlay = 0 ;
       $("#play").html("reset")
@@ -249,28 +249,28 @@ function checkKey(e) {
         tracking.Fast.THRESHOLD = 7;
         ctx.drawImage(image, 0, 0, width, height);
         var imageData = ctx.getImageData(0, 0, width, height);
-        
+
 
         console.log('deeetect!')
         var fist = tracking.ViolaJones.detect(imageData.data, width, height, .2, 1, .05, 0.2, fistData);
 
     //    var gray = tracking.Image.grayscale(imageData.data, width, height);
     //  var conv = tracking.Image.sobel(gray, width, height, []);
-        
+
 
 
         console.log('fist')
-        console.log(fist);  
+        console.log(fist);
 
         $("#debug_stuff").html("");
 
         //ctx2.drawImage(canvas2, 0, 0, w, h, 0, 0, canvas.width, canvas.height);
-        
+
 
 
         // second image:
 
- 
+
 
       };
      function getPixelXY(imgData, x, y) {
@@ -298,7 +298,7 @@ function checkKey(e) {
 
           var current = 0;
           var deviation = 20;
-          
+
 
           var built = [];
 
@@ -308,7 +308,7 @@ function checkKey(e) {
 
           var buildHeights = [];
           var height =0 ;
-          
+
           var currentIndex = 0;
           var currentScope = 0;
 
@@ -334,7 +334,7 @@ function checkKey(e) {
                       if(currentScope > 10){ buildHeights.push(height); }
                       currentScope = this[i];
                       currentBuild.push(this[i]);
-                      
+
                       height = 0;
 
                     }
@@ -349,17 +349,17 @@ function checkKey(e) {
 
             }
 
-            
+
 
 
 
 
           }
 console.log("height");
-console.log(buildHeights);          
+console.log(buildHeights);
 return { reduced: currentBuild, heights: buildHeights}
 
-      
+
 
       }
 

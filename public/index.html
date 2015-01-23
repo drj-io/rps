@@ -12,17 +12,20 @@
 
 <base target="_blank">
 
+<link rel="stylesheet" href="css/normalize.css">
+<link rel="stylesheet" href="css/tupac.css">
+
 <script src="/js/bower_components/tracking.js/build/tracking-min.js"></script>
 
 <title></title>
 
 
-  <style>
+  <!--<style>
   div.select {
     margin: 0 0 1em 0;
   }
 
-  </style>
+  </style>-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 </head>
 
@@ -30,46 +33,57 @@
 <div id="container">
 
 
-    <img id="tupac" src="/img/vest.jpg" width="700">
-    <h1 id="play"></h1>
-    <h1 id="guess"></h1>
+    <div class="tupac-container">
 
-    <h2>My History</h2>
-    <div id="myHistory"></div>
-    <br/>
-    <h2>Their History</h2>
-    <div id="theirHistory"></div>
+      <div class="tupac-image-wrapper">
+        <img class="madwire-logo" src="img/logo.jpg" alt="">
+        <img id="tupac" src="/img/vest.jpg" width="700">
+        <table class="tupac-score">
+          <thead>
+            <tr>
+              <th>Win</th>
+              <th>Tie</th>
+              <th>Lose</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="wins">0</td>
+              <td class="tie">0</td>
+              <td class="lose">0</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          Up Arrow = Load and fire (1,2,3) <br> Esc = Reset / R, P, S = Log their play
+        </p>
+      </div>
 
-    <div>
-      Up Arrow = Load and fire (1,2,3) / Esc = Reset / R, P, S = Log their play
+      <div class="tupac-info">
+        <h1 id="play"></h1>
+        <h2>My History</h2>
+        <p id="myHistory"></p>
+        <h2>Their History</h2>
+        <p id="theirHistory"></p>
+
+
+      </div>
+      </div>
     </div>
 
-    <table>
-      <tr>
-        <th>Win</th>
-        <th>Tie</th>
-        <th>Lose</th>
-      </tr>
-      <tr>
-        <td class="wins">0</td>
-        <td class="tie">0</td>
-        <td class="lose">0</td>
-      </tr>
-</div>
 
+<!--<style>
 
-<style>
-
-  #myHistory span, #theirHistory span { 
+  #myHistory span, #theirHistory span {
     display: inline-block;
     width: 80px;
     text-align: center;
     border:1px solid black;
   }
   h2, #myHistory, #theirHistory {
-    display: inline-block; font-size: 18px; 
+    display: inline-block; font-size: 18px;
   }
-  h2 { 
+  h2 {
     width: 225px;
     border: 1px solid black;
   }
@@ -78,7 +92,7 @@
   .win { background: #5555ff;}
   th { font-size: 32px;}
   td { border: 1px solid black; font-size: 30px;}
-</style>
+</style>-->
 
 
 <div id="debug">
@@ -107,6 +121,8 @@
 
 <script src='/js/fist.js'></script>
 <script src='/js/main.js'></script>
+
+<script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
 
 
 </body>
