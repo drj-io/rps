@@ -185,14 +185,14 @@ function checkKey(e) {
           activeKey=true;
 
           currentPlay ++;
-          if(currentPlay < 3){
+          if(currentPlay < 4){
             $("#play").html(currentPlay);
             var snd = new Audio("/mp3/"+currentPlay+".mp3"); // buffers automatically when created
             snd.play();
           }
           else{
 
-            var thisPlay = pacBrain.myMove("chaos");
+            var thisPlay = pacBrain.myMove("normal");
             var snd = new Audio("/mp3/"+currentPlay+".mp3"); // buffers automatically when created
             snd.play();
             console.log(thisPlay);
